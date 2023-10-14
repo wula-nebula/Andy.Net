@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Template.RabbitSend": {
+      "commandName": "Project",
+      "commandLineArgs": "kern.* *.critical"
+    }
+  }
+}
