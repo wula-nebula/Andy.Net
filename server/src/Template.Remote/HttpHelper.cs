@@ -64,26 +64,24 @@ namespace Template.Remote
                 };
                 using HttpResponseMessage result = await resultTask;
                 result.EnsureSuccessStatusCode();
-                var remoteJson = await result.Content.ReadAsStringAsync();
+                //bool IsGZip = result.Content.Headers.ContentEncoding.Contains("gzip");
+                //string remoteJson = string.Empty;
+                //if (IsGZip)
+                //{
+                //    Stream stm = result.Content.ReadAsStreamAsync().Result;
+                //    GZipStream gzip = new GZipStream(stm, CompressionMode.Decompress);//解压缩
+                //    using (StreamReader reader = new StreamReader(gzip, Encoding.UTF8))
+                //    {
+                //        remoteJson = reader.ReadToEnd();
+                //    }
+                //}
+                //else
+                //{
+                //    remoteJson = await result.Content.ReadAsStringAsync();
+                //}
+                string remoteJson = await result.Content.ReadAsStringAsync();
 
-                bool IsGzip = result.Content.Headers.ContentEncoding.Contains("gzip");
-
-                if (IsGzip)
-                {
-                    Stream stm = result.Content.ReadAsStreamAsync().Result;
-                    string strHTML = string.Empty;
-                    GZipStream gzip = new GZipStream(stm, CompressionMode.Decompress);//解压缩
-                    using (StreamReader reader = new StreamReader(gzip, Encoding.UTF8))
-                    {
-                        strHTML = reader.ReadToEnd();
-                    }
-                }
-                else
-                {
-                    var outputStr = result.Content.ReadAsStringAsync().Result;
-                }
                 if (typeof(T) == typeof(string)) return (T)(object)remoteJson;
-
                 return string.IsNullOrWhiteSpace(remoteJson) ? default : JsonConvert.DeserializeObject<T>(remoteJson);
             }
             catch (TaskCanceledException ex)

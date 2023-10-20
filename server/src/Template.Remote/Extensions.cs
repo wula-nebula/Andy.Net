@@ -11,7 +11,7 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddHttpProxy(this IServiceCollection services)
         {
-            services.AddScoped<IHttpClientProxy, HttpClientProxy>();
+            services.AddSingleton<IHttpClientProxy, HttpClientProxy>();
             return services;
         }
     }

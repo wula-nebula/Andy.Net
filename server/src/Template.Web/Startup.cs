@@ -16,6 +16,7 @@ using Template.Core.Common;
 using Template.Dapper;
 using Template.Remote.HttpApp;
 using Template.Web.Common;
+using Template.Web.Filters;
 
 namespace Template.Web
 {
@@ -34,10 +35,11 @@ namespace Template.Web
         {
             services.AddControllers();
             //services.AddHttpClient();
-            services.AddHttpClient("template").ConfigureHttpClient(option =>
-            {
-                option.DefaultRequestHeaders.Connection.Add("keep-alive");
-            });//.SetHandlerLifetime(TimeSpan.FromMinutes(5));
+            //services.AddHttpClient("template").ConfigureHttpClient(option =>
+            //{
+            //    option.DefaultRequestHeaders.Connection.Add("keep-alive");
+            //});//.SetHandlerLifetime(TimeSpan.FromMinutes(5));
+            services.AddHttpClient();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Template.Web", Version = "v1" });
@@ -48,6 +50,8 @@ namespace Template.Web
                 .AddApplication()
                 .AddHttpProxy()
                 .AddElastic();
+
+            services.AddControllers(options => options.Filters.Add(new CustomExceptionFilter()));
 
             //services.AddCap(x =>
             //{
